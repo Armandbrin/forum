@@ -1,0 +1,5 @@
+PDOException: There is already an active transaction in C:\xampp\htdocs\forum\config\config.php:111
+Stack trace:
+#0 C:\xampp\htdocs\forum\config\config.php(111): PDO->beginTransaction()
+#1 C:\xampp\htdocs\forum\index.php(64): bdd->getAllSousCategorie()
+#2 {main}

@@ -3,24 +3,6 @@ session_start();
 require_once("config/config.php");
 $bdd = new bdd();
 $bdd->connect();
-
-if (isset($_POST['connexion'])) {
-
-    $email = htmlspecialchars($_POST['c-email']);
-    $mdp = htmlspecialchars($_POST['c-mdp']);
-
-    if (!empty($_POST['c-email']) && !empty($_POST['c-mdp'])) {
-        $user = $bdd->connexion(["user" => $email, "pass" => $mdp]);
-        if ($user) {
-            $_SESSION["user"] = $user;
-        }
-        $message = NULL;
-    } else {
-        $message = "Une case est vide";
-    }
-}
-
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -29,11 +11,11 @@ if (isset($_POST['connexion'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Accueil</title>
+    <title>Contact</title>
 </head>
 
 <body>
-    <header class="flex justify-between items-center lg:pl-32 px-4 lg:pr-32 h-24 border-b-[1px] border-[#ed231a]">
+    <header class="flex justify-between items-center lg:pl-32 pl-4 lg:pr-32 pr-4 h-24 border-b-[1px] border-[#ed231a]">
         <a href="index.php"><img class="lg:w-[10vw] w-[26vw] lg:h-[7vh] h-[9vh]" src="img/logo-forum.png" alt="logo forum"></a>
         <nav class="flex gap-5 items-center">
             <?php if (isset($_SESSION["user"])) {
@@ -56,30 +38,13 @@ if (isset($_POST['connexion'])) {
         </nav>
     </header>
     <main>
-        <?php foreach ($bdd->getAllCategorie() as $categorie) { ?>
-            <section class="mx-10 mt-10 bg-red-800 rounded-lg">
-                <a href="">
-                    <h2 class="p-1"><?php print $categorie['name'] ?></h2>
-                </a>
-                <?php foreach ($bdd->getAllSousCategorie() as $sous_categorie) { ?>
-                    <section class="flex justify-between items-center bg-red-600 p-1 border-b-[1px] border-red-500">
-                        <a href="">
-                            <h2 value="<?php print $sous_categorie['id_categorie'] ?>"><?php print $sous_categorie['name'] ?></h2>
-                        </a>
-                        <article class="flex gap-2">
-                            <img class="w-5 h-5" src="img/message.svg" alt="icone message">
-                            <p>0</p>
-                        </article>
-                    </section>
-                <?php } ?>
-            </section>
-        <?php } ?>
 
     </main>
     <footer class="flex justify-between items-center lg:pl-32 pl-4 lg:pr-32 pr-4 h-12 border-t-[1px] border-[#ed231a] fixed bottom-0 w-full">
         <a href="index.php"><img class="lg:w-[10vw] w-[13vw] lg:h-[7vh] h-[4.5vh]" src="img/logo-forum.png" alt="logo forum"></a>
         <a href="contact.php">contact</a>
     </footer>
+
 </body>
 
 </html>
