@@ -1,0 +1,5 @@
+PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'nom' in 'field list' in C:\xampp\htdocs\forum\config\config.php:153
+Stack trace:
+#0 C:\xampp\htdocs\forum\config\config.php(153): PDOStatement->execute()
+#1 C:\xampp\htdocs\forum\admin.php(22): bdd->addSousCategorie(Object(categorie))
+#2 {main}

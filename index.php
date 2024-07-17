@@ -55,16 +55,12 @@ if (isset($_POST['connexion'])) {
         <?php foreach ($bdd->getAllCategorie() as $categorie) { ?>
 
             <section class="mx-10 mt-2 bg-red-800 rounded-lg">
-                <a href="">
-                    <h2 class="p-1"><?php print $categorie['name'] ?></h2>
-                </a>
+                <h2 class="p-1"><a href=""><?php print $categorie['name'] ?></a></h2>
                 <?php foreach ($bdd->getAllSousCategorie($categorie['id']) as $sous_categorie) { ?>
-                    <section class="flex justify-between items-center bg-red-600 p-1 border-b-[1px] border-red-500">
-                        <a href="">
-                            <h2><?php print $sous_categorie["nom"] ?></h2>
-                        </a>
-                        <article class="flex gap-2">
-                            <img class="w-5 h-5" src="img/message.svg" alt="icone message">
+                    <section class="flex justify-between bg-red-600 p-1 border-b-[1px] border-red-500">
+                        <h2><a href=""><?php print $sous_categorie["nom"] ?></a></h2>
+                        <article class="flex gap-2 items-center">
+                            <a href=""><img class="w-5 h-5" src="img/message.svg" alt="icone message"></a>
                             <p>0</p>
                         </article>
                     </section>

@@ -39,17 +39,14 @@ if (isset($_POST['inscription'])) {
             <form action="index.php">
                 <button type="submit" class="bg-gradient-to-l from-red-600 to-red-800 border-[1px] border-black px-2 py-1 rounded-lg text-white text-xl">Accueil</button>
             </form>
-            <form action="inscription.php">
-                <button type="submit" class="bg-gradient-to-l from-red-600 to-red-800 border-[1px] border-black px-2 py-1 rounded-lg text-white text-xl">Inscription</button>
-            </form>
         </nav>
     </header>
-    <main class="flex items-center flex-col pt-[10vh]">
-        <h1 class="text-2xl mb-2">Connexion:</h1>
-        <form class="flex flex-col gap-5 border-2 border-black p-5 rounded-lg w-[30vw] bg-white" action="index.php" method="post">
-            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white" type="email" name="c-email" id="" placeholder="Email">
-            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white" type="password" name="c-mdp" id="" placeholder="Mot-de-passe">
-            <button class="border-2 border-black p-1 bg-gradient-to-l from-red-600 to-red-800 text-white rounded-lg" type="submit" name="connexion">Envoyer</button>
+    <main class="flex items-center flex-col pt-[10vh] bg-cover bg-center" style="background-image: url(img/fond1.jpg); padding-bottom: 27.2vh; background-size: 75vw 100vh;">
+        <form class="flex flex-col items-center gap-5 border-2 border-black p-5 rounded-lg w-[30vw] bg-white" action="index.php" method="post">
+            <h1 class="text-2xl mb-2">Connexion:</h1>
+            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white w-full" type="email" name="c-email" id="" placeholder="Email">
+            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white w-full" type="password" name="c-mdp" id="" placeholder="Mot-de-passe">
+            <button class="border-2 border-black p-1 bg-gradient-to-l from-red-600 to-red-800 text-white rounded-lg w-full" type="submit" name="connexion">Envoyer</button>
             <a class="underline" href="inscription.php">Je n'ai pas de compte</a>
         </form>
     </main>

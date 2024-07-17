@@ -26,13 +26,13 @@ $bdd->connect();
             </form>
         </nav>
     </header>
-    <main class="flex items-center flex-col pt-[10vh] bg-cover bg-center" style="background-image: url(img/fond.jpg); background-size: 10vw 10vh;">
-        <h1 class="text-2xl mb-2">Inscription:</h1>
-        <form class="flex flex-col gap-5 border-2 border-black p-5 rounded-lg w-[25vw] bg-black" action="connexion.php" method="post">
-            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white" type="text" name="i-nom" id="" placeholder="Nom">
-            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white" type="text" name="i-prenom" id="" placeholder="Prénom">
-            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white" type="email" name="i-email" id="" placeholder="Email">
-            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white" type="password" name="i-mdp" id="" placeholder="Mot-de-passe">
+    <main class="flex items-center flex-col pt-[10vh] bg-cover bg-center" style="background-image: url(img/fond1.jpg); padding-bottom: 18.4vh; background-size: 75vw 100vh;">
+        <form class="flex flex-col items-center gap-5 border-2 border-black p-5 rounded-lg w-[25vw] bg-white" action="connexion.php" method="post">
+            <h1 class="text-2xl mb-2">Inscription:</h1>
+            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white w-full" type="text" name="i-nom" id="" placeholder="Nom">
+            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white w-full" type="text" name="i-prenom" id="" placeholder="Prénom">
+            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white w-full" type="email" name="i-email" id="" placeholder="Email">
+            <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white w-full" type="password" name="i-mdp" id="" placeholder="Mot-de-passe">
             <button class="border-2 border-black p-1 bg-gradient-to-l from-red-600 to-red-800 text-white rounded-lg w-full" type="submit" name="inscription">Envoyer</button>
         </form>
     </main>

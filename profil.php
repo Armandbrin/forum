@@ -30,8 +30,24 @@ $bdd->connect();
             <?php } ?>
         </nav>
     </header>
-    <main>
-
+    <main class="flex justify-center bg-cover bg-center" style="background-image: url(img/fond2.jpg); padding-bottom: 43vh; background-size: 100vw 70.5vh;">
+        <?php foreach ($bdd->getAllUsers() as $user) {
+            if ($_SESSION["user"]["id"] == $user["id"]) {
+        ?>
+                <section class="border-2 border-black p-5 flex justify-between gap-5 rounded-lg w-[40vw] bg-white mt-10">
+                    <article class="flex flex-col gap-4 border-r-2 border-black pr-24">
+                        <h2 class="text-xl underline">Information personnelle:</h2>
+                        <p>Nom: <?php print $user["nom"] ?></p>
+                        <p>Prénom: <?php print $user["prenom"] ?></p>
+                        <p>Email: <?php print $user["email"] ?></p>
+                    </article class="flex flex-col gap-2">
+                    <article>
+                        <h2 class="text-xl underline">Photo de profil:</h2>
+                        <img class="w-32 h-32 mt-2" src="img/profil.jpg" alt="ajouter une photo de profil">
+                    </article>
+                </section>
+        <?php }
+        } ?>
     </main>
     <footer class="flex justify-between items-center pl-32 pr-32 h-24 border-t-[1px] border-[#ed231a] fixed bottom-0 w-full">
         <a href="index.php"><img class="w-[10vw] h-[7vh]" src="img/logo-forum.png" alt="logo forum"></a>
