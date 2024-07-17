@@ -64,7 +64,7 @@ if (isset($_POST['connexion'])) {
                 <?php foreach ($bdd->getAllSousCategorie() as $sous_categorie) { ?>
                     <section class="flex justify-between items-center bg-red-600 p-1 border-b-[1px] border-red-500">
                         <a href="">
-                            <h2 value="<?php print $sous_categorie['id_categorie'] ?>"><?php print $sous_categorie['name'] ?></h2>
+                            <h2"><?php print $sous_categorie['name'] ?></h2>
                         </a>
                         <article class="flex gap-2">
                             <img class="w-5 h-5" src="img/message.svg" alt="icone message">
@@ -76,8 +76,8 @@ if (isset($_POST['connexion'])) {
         <?php } ?>
 
     </main>
-    <footer class="flex justify-between items-center lg:pl-32 pl-4 lg:pr-32 pr-4 h-12 border-t-[1px] border-[#ed231a] fixed bottom-0 w-full">
-        <a href="index.php"><img class="lg:w-[10vw] w-[13vw] lg:h-[7vh] h-[4.5vh]" src="img/logo-forum.png" alt="logo forum"></a>
+    <footer class="flex justify-between items-center pl-32 pr-32 h-24 border-t-[1px] border-[#ed231a] fixed bottom-0 w-full">
+        <a href="index.php"><img class="w-[10vw] h-[7vh]" src="img/logo-forum.png" alt="logo forum"></a>
         <a href="contact.php">contact</a>
     </footer>
 </body>

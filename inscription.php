@@ -36,8 +36,8 @@ $bdd->connect();
             <button class="border-2 border-black p-1 bg-gradient-to-l from-red-600 to-red-800 text-white rounded-lg w-full" type="submit" name="inscription">Envoyer</button>
         </form>
     </main>
-    <footer class="flex justify-between items-center lg:pl-32 pl-4 lg:pr-32 pr-4 h-12 border-t-[1px] border-[#ed231a] fixed bottom-0 w-full">
-        <a href="index.php"><img class="lg:w-[10vw] w-[13vw] lg:h-[7vh] h-[4.5vh]" src="img/logo-forum.png" alt="logo forum"></a>
+    <footer class="flex justify-between items-center pl-32 pr-32 h-24 border-t-[1px] border-[#ed231a] fixed bottom-0 w-full">
+        <a href="index.php"><img class="w-[10vw] h-[7vh]" src="img/logo-forum.png" alt="logo forum"></a>
         <a href="contact.php">contact</a>
     </footer>
 

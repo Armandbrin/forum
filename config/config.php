@@ -109,7 +109,7 @@ class bdd
     {
         try {
             $this->bdd->beginTransaction();
-            $sql = "SELECT * FROM sous_categorie";
+            $sql = "SELECT * FROM sous_categorie INNER JOIN categorie on sous_categorie.id_categorie = categorie.id";
             $done = $this->bdd->query($sql);
             return $done->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
