@@ -92,7 +92,6 @@ class bdd
     public function getAllCategorie()
     {
         try {
-            $this->bdd->beginTransaction();
             $sql = "SELECT * FROM categorie";
             $done = $this->bdd->query($sql);
             return $done->fetchAll(PDO::FETCH_ASSOC);
@@ -105,13 +104,13 @@ class bdd
         }
     }
 
-    public function getAllSousCategorie()
+    public function getAllSousCategorie($id)
     {
         try {
-            $this->bdd->beginTransaction();
-            $sql = "SELECT * FROM sous_categorie INNER JOIN categorie on sous_categorie.id_categorie = categorie.id";
-            $done = $this->bdd->query($sql);
-            return $done->fetchAll(PDO::FETCH_ASSOC);
+            $sql = $this->bdd->prepare("SELECT * FROM sous_categorie JOIN categorie ON sous_categorie.id_categorie = categorie.id WHERE categorie.id = :id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             $this->bdd->rollBack();
             $error = fopen("error.log", "w");

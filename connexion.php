@@ -44,9 +44,9 @@ if (isset($_POST['inscription'])) {
             </form>
         </nav>
     </header>
-    <main class="flex items-center flex-col py-[20.9vh] bg-cover bg-center" style="background-image: url(img/fond.jpg)">
+    <main class="flex items-center flex-col pt-[10vh]">
         <h1 class="text-2xl mb-2">Connexion:</h1>
-        <form class="flex flex-col gap-5 border-2 border-black p-5 rounded-lg w-[70vw] bg-white" action="index.php" method="post">
+        <form class="flex flex-col gap-5 border-2 border-black p-5 rounded-lg w-[30vw] bg-white" action="index.php" method="post">
             <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white" type="email" name="c-email" id="" placeholder="Email">
             <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white" type="password" name="c-mdp" id="" placeholder="Mot-de-passe">
             <button class="border-2 border-black p-1 bg-gradient-to-l from-red-600 to-red-800 text-white rounded-lg" type="submit" name="connexion">Envoyer</button>
