@@ -1,6 +1,7 @@
 <?php
 require_once("class/categorie.php");
 require_once("class/users.php");
+require_once("class/posts.php");
 class bdd
 {
     private $bdd;
@@ -77,15 +78,36 @@ class bdd
             throw new Exception("error");
         }
     }
-
+// pas fini
     public function getAllPost()
     {
         try {
-            $sql = "SELECT * FROM posts";
+            $sql = "SELECT * FROM posts JOIN sous_categorie ON sous_categorie.id = posts.id_sous_categorie
+            JOIN users ON users.id = posts.id_user WHERE ";
             $done = $this->bdd->query($sql);
             return $done->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            throw new Exception("error");
+        }
+    }
+
+    public function addPost(posts $post): void
+    {
+        try {
+            $this->bdd->beginTransaction();
+            $titre = $post->getPostTitre();
+            $contenue = $post->getPostContenue();
+
+            $sql = $this->bdd->prepare("INSERT INTO posts (titre, contenue) VALUES (:titre, :contenue)");
+            $sql->bindParam(":titre", $titre);
+            $sql->bindParam(":contenue", $contenue);
+            $sql->execute();
+            $this->bdd->commit();
+        } catch (PDOException $e) {
             $error = fopen("error.log", "w");
             $txt = $e . "\n";
             fwrite($error, $txt);
@@ -107,7 +129,24 @@ class bdd
             throw new Exception("error");
         }
     }
-
+    public function getAllSousCategorie($id)
+    {
+        try {
+            $this->bdd->beginTransaction();
+            $sql = $this->bdd->prepare("SELECT * FROM sous_categorie JOIN categorie ON categorie.id = sous_categorie.id_categorie WHERE sous_categorie.id_categorie = :id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            $this->bdd->commit();
+            return $sql->fetchAll();
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            throw new Exception("error");
+        }
+    }
+    
     public function getIdCategorie()
     {
         try {
@@ -137,7 +176,7 @@ class bdd
             $error = fopen("error.log", "w");
             $txt = $e . "\n";
             fwrite($error, $txt);
-            // throw new Exception("error");
+            throw new Exception("error");
         }
     }
 
@@ -157,16 +196,15 @@ class bdd
             $error = fopen("error.log", "w");
             $txt = $e . "\n";
             fwrite($error, $txt);
-            // throw new Exception("error");
+            throw new Exception("error");
         }
     }
 
-    public function delSousCategorie(categorie $categorie)
+    public function delSousCategorie($id)
     {
 
         try {
             $this->bdd->beginTransaction();
-            $id = $categorie->getIdSousCategorie();
             $sql = $this->bdd->prepare("DELETE FROM sous_categorie WHERE id = :id");
             $sql->bindParam(":id", $id);
             $sql->execute();
@@ -176,7 +214,7 @@ class bdd
             $error = fopen("error.log", "w");
             $txt = $e . "\n";
             fwrite($error, $txt);
-            // throw new Exception("error");
+            throw new Exception("error");
         }
     }
 
@@ -199,23 +237,6 @@ class bdd
     }
 
 
-    public function getAllSousCategorie($id)
-    {
-        try {
-            $this->bdd->beginTransaction();
-            $sql = $this->bdd->prepare("SELECT * FROM sous_categorie JOIN categorie ON sous_categorie.id_categorie = categorie.id WHERE categorie.id = :id");
-            $sql->bindParam(":id", $id);
-            $sql->execute();
-            $this->bdd->commit();
-            return $sql->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $this->bdd->rollBack();
-            $error = fopen("error.log", "w");
-            $txt = $e . "\n";
-            fwrite($error, $txt);
-            throw new Exception("error");
-        }
-    }
 
     public function getAllReponse()
     {

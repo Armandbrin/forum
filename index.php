@@ -4,18 +4,6 @@ require_once("config/config.php");
 $bdd = new bdd();
 $bdd->connect();
 
-if (isset($_POST['connexion'])) {
-
-    $email = htmlspecialchars($_POST['c-email']);
-    $mdp = htmlspecialchars($_POST['c-mdp']);
-
-    if (!empty($_POST['c-email']) && !empty($_POST['c-mdp'])) {
-        $user = $bdd->connexion(["user" => $email, "pass" => $mdp]);
-        if ($user) {
-            $_SESSION["user"] = $user;
-        }
-    }
-}
 
 ?>
 <!DOCTYPE html>
@@ -53,26 +41,24 @@ if (isset($_POST['connexion'])) {
     </header>
     <main>
         <?php foreach ($bdd->getAllCategorie() as $categorie) { ?>
-
-            <section class="mx-10 mt-2 bg-red-800 rounded-lg">
-                <h2 class="p-1"><a href=""><?php print $categorie['name'] ?></a></h2>
-                <?php foreach ($bdd->getAllSousCategorie($categorie['id']) as $sous_categorie) { ?>
-                    <section class="flex justify-between bg-red-600 p-1 border-b-[1px] border-red-500">
-                        <h2><a href=""><?php print $sous_categorie["nom"] ?></a></h2>
-                        <article class="flex gap-2 items-center">
-                            <a href=""><img class="w-5 h-5" src="img/message.svg" alt="icone message"></a>
-                            <p>0</p>
-                        </article>
-                    </section>
-                <?php } ?>
+            <section class="mx-10 mt-2 bg-red-800 rounded-t-lg p-1">
+                <h2><a href="categorie_extend.php?cat=<?= $categorie["id"] ?>"><?= $categorie['name'] ?></a></h2>
             </section>
+            <?php foreach ($bdd->getAllSousCategorie($categorie['id']) as $sous_categorie) {?>
+                <section class="flex justify-between bg-red-600 p-1 border-b-[1px] border-red-500 mx-10">
+                    <h2><a href="sous_categorie_extend.php?cat=<?= $sous_categorie[0] ?>"><?= $sous_categorie["nom"] ?></a></h2>
+                    <article class="flex gap-2 items-center">
+                        <a href=""><img class="w-5 h-5" src="img/message.svg" alt="icone message"></a>
+                        <p>0</p>
+                    </article>
+                </section>
+            <?php } ?>
         <?php } ?>
 
     </main>
-    <footer class="flex justify-between items-center pl-32 pr-32 h-24 border-t-[1px] border-[#ed231a] fixed bottom-0 w-full">
+    <footer class="flex justify-between items-center pl-32 pr-32 h-24 border-t-[1px] border-[#ed231a] mt-10">
         <a href="index.php"><img class="w-[10vw] h-[7vh]" src="img/logo-forum.png" alt="logo forum"></a>
         <a href="contact.php">contact</a>
     </footer>
 </body>
-
 </html>

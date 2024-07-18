@@ -29,10 +29,7 @@ if (isset($_POST["supp"])) {
 
 if (isset($_POST["supp2"])) {
     $id = $_POST['supp2'];
-
-    $suppSousCategorie = new categorie();
-    $suppSousCategorie->setIdSousCategorie($id);
-    $bdd->delSousCategorie($suppSousCategorie);
+    $bdd->delSousCategorie($id);
 }
 ?>
 <!DOCTYPE html>
@@ -49,6 +46,9 @@ if (isset($_POST["supp2"])) {
     <header class="flex justify-between items-center lg:pl-32 px-4 lg:pr-32 h-24 border-b-[1px] border-[#ed231a]">
         <a href="index.php"><img class="lg:w-[10vw] w-[26vw] lg:h-[7vh] h-[9vh]" src="img/logo-forum.png" alt="logo forum"></a>
         <nav class="flex gap-5 items-center">
+            <form action="index.php">
+                <button type="submit" class="bg-gradient-to-l from-red-600 to-red-800 border-[1px] border-black px-2 py-1 rounded-lg text-white text-xl">Accueil</button>
+            </form>
             <?php if (isset($_SESSION["user"])) { ?>
                 <form action="profil.php">
                     <button type="submit" class="bg-gradient-to-l from-red-600 to-red-800 border-[1px] border-black px-2 py-1 rounded-lg text-white text-xl">Profil</button>
@@ -75,7 +75,6 @@ if (isset($_POST["supp2"])) {
             </form>
         </section>
         <?php foreach ($bdd->getAllCategorie() as $categorie) { ?>
-
             <section class="mx-10 mt-2 bg-red-800 rounded-lg">
                 <article class="flex justify-between">
                     <h2 class="p-1"><a href=""><?php print $categorie['name'] ?></a></h2>
@@ -88,7 +87,7 @@ if (isset($_POST["supp2"])) {
                         <h2><a href=""><?php print $sous_categorie["nom"] ?></a></h2>
                         <article class="flex gap-2 items-center">
                             <form class="border-2 border-black rounded-lg m-1 mr-12 p-1 bg-white" action="" method="post">
-                                <button type="submit" name="supp2" value="<?= $sous_categorie['id']; ?>">Supprimer</button>
+                                <button type="submit" name="supp2" value="<?= $sous_categorie[0]; ?>">Supprimer</button>
                             </form>
                             <a href=""><img class="w-5 h-5" src="img/message.svg" alt="icone message"></a>
                             <p>0</p>

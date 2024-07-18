@@ -3,6 +3,25 @@ session_start();
 require_once("config/config.php");
 $bdd = new bdd();
 $bdd->connect();
+
+if (isset($_POST['inscription'])) {
+
+    $nom = htmlspecialchars($_POST['i-nom']);
+    $prenom = htmlspecialchars($_POST['i-prenom']);
+    $email = htmlspecialchars($_POST['i-email']);
+    $mdp = htmlspecialchars($_POST['i-mdp']);
+
+    $newUser = new users();
+    $newUser->setNom($nom);
+    $newUser->setPrenom($prenom);
+    $newUser->setEmail($email);
+    $newUser->setMdp(password_hash($mdp, PASSWORD_ARGON2ID));
+    $newUser->setStatut("user");
+
+    $bdd->addUser($newUser);
+
+    header("Location: connexion.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -27,7 +46,7 @@ $bdd->connect();
         </nav>
     </header>
     <main class="flex items-center flex-col pt-[10vh] bg-cover bg-center" style="background-image: url(img/fond1.jpg); padding-bottom: 18.4vh; background-size: 75vw 100vh;">
-        <form class="flex flex-col items-center gap-5 border-2 border-black p-5 rounded-lg w-[25vw] bg-white" action="connexion.php" method="post">
+        <form class="flex flex-col items-center gap-5 border-2 border-black p-5 rounded-lg w-[25vw] bg-white" method="post">
             <h1 class="text-2xl mb-2">Inscription:</h1>
             <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white w-full" type="text" name="i-nom" id="" placeholder="Nom">
             <input class="border-2 border-black p-1 rounded-lg bg-gradient-to-l from-red-600 to-red-800 text-white placeholder-white w-full" type="text" name="i-prenom" id="" placeholder="Prénom">
