@@ -2,6 +2,7 @@
 require_once("class/categorie.php");
 require_once("class/users.php");
 require_once("class/posts.php");
+require_once("class/reponse.php");
 class bdd
 {
     private $bdd;
@@ -78,14 +79,50 @@ class bdd
             throw new Exception("error");
         }
     }
-// pas fini
-    public function getAllPost()
+
+    public function getAllPost($sous_categorie_id)
     {
         try {
-            $sql = "SELECT * FROM posts JOIN sous_categorie ON sous_categorie.id = posts.id_sous_categorie
-            JOIN users ON users.id = posts.id_user WHERE ";
-            $done = $this->bdd->query($sql);
-            return $done->fetchAll(PDO::FETCH_ASSOC);
+            $this->bdd->beginTransaction();
+            $sql = $this->bdd->prepare("SELECT * FROM posts JOIN sous_categorie ON sous_categorie.id = posts.id_sous_categorie WHERE posts.id_sous_categorie = :sous_categorie");
+            $sql->bindParam(":sous_categorie", $sous_categorie_id);
+            $sql->execute();
+            $this->bdd->commit();
+            return $sql->fetchAll();
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            throw new Exception("error");
+        }
+    }
+    public function getAllPost2($id)
+    {
+        try {
+            $this->bdd->beginTransaction();
+            $sql = $this->bdd->prepare("SELECT * FROM posts JOIN sous_categorie ON sous_categorie.id = posts.id_sous_categorie WHERE posts.id = :id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            $this->bdd->commit();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            // throw new Exception("error");
+        }
+    }
+    public function getIdPost($id)
+    {
+        try {
+            $this->bdd->beginTransaction();
+            $sql = $this->bdd->prepare("SELECT id FROM posts WHERE id_sous_categorie = :id");
+            $sql->bindparam(":id", $id);
+            $sql->execute();
+            $this->bdd->commit();
+            return $sql->fetchAll();
         } catch (PDOException $e) {
             $this->bdd->rollBack();
             $error = fopen("error.log", "w");
@@ -101,10 +138,14 @@ class bdd
             $this->bdd->beginTransaction();
             $titre = $post->getPostTitre();
             $contenue = $post->getPostContenue();
+            $idSousCategorie = $post->getIdSousCategoriePost();
+            $idUser = $post->getIdUserPost();
 
-            $sql = $this->bdd->prepare("INSERT INTO posts (titre, contenue) VALUES (:titre, :contenue)");
+            $sql = $this->bdd->prepare("INSERT INTO posts (titre, contenue, id_sous_categorie, id_user) VALUES (:titre, :contenue, :id_sous_categorie, :id_user)");
             $sql->bindParam(":titre", $titre);
             $sql->bindParam(":contenue", $contenue);
+            $sql->bindParam(":id_sous_categorie", $idSousCategorie);
+            $sql->bindParam(":id_user", $idUser);
             $sql->execute();
             $this->bdd->commit();
         } catch (PDOException $e) {
@@ -146,13 +187,16 @@ class bdd
             throw new Exception("error");
         }
     }
-    
-    public function getIdCategorie()
+
+    public function getSousCategorie($id)
     {
         try {
-            $sql = "SELECT id FROM categorie";
-            $done = $this->bdd->query($sql);
-            return $done->fetchAll(PDO::FETCH_ASSOC);
+            $this->bdd->beginTransaction();
+            $sql = $this->bdd->prepare("SELECT * FROM sous_categorie WHERE id = :id");
+            $sql->bindparam(":id", $id);
+            $sql->execute();
+            $this->bdd->commit();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             $this->bdd->rollBack();
             $error = fopen("error.log", "w");
@@ -238,12 +282,50 @@ class bdd
 
 
 
-    public function getAllReponse()
+    public function getAllReponse($id)
     {
         try {
-            $sql = "SELECT * FROM reponse";
-            $done = $this->bdd->query($sql);
-            return $done->fetchAll(PDO::FETCH_ASSOC);
+            $sql = $this->bdd->prepare("SELECT * FROM reponse JOIN posts ON reponse.id_post = posts.id WHERE posts.id = :id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            throw new Exception("error");
+        }
+    }
+    public function getIdReponse($id)
+    {
+        try {
+            $sql = $this->bdd->prepare("SELECT id FROM reponse WHERE id_post = :id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            throw new Exception("error");
+        }
+    }
+
+    public function addReponse(reponse $rep): void
+    {
+        try {
+            $this->bdd->beginTransaction();
+            $text = $rep->getText();
+            $post = $rep->getIdPost();
+            $user = $rep->getIdUser();
+            $sql = $this->bdd->prepare("INSERT INTO reponse (contenue, id_post, id_user) VALUES (:contenue, :id_post, :id_user)");
+            $sql->bindParam(":contenue", $text);
+            $sql->bindParam(":id_post", $post);
+            $sql->bindParam(":id_user", $user);
+            $sql->execute();
+            $this->bdd->commit();
         } catch (PDOException $e) {
             $this->bdd->rollBack();
             $error = fopen("error.log", "w");

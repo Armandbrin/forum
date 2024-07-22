@@ -1,5 +1,5 @@
-PDOException: SQLSTATE[HY000]: General error: 1364 Field 'id_sous_categorie' doesn't have a default value in C:\xampp\htdocs\forum\config\config.php:107
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'id_post' cannot be null in C:\xampp\htdocs\forum\config\config.php:312
 Stack trace:
-#0 C:\xampp\htdocs\forum\config\config.php(107): PDOStatement->execute()
-#1 C:\xampp\htdocs\forum\profil.php(15): bdd->addPost(Object(posts))
+#0 C:\xampp\htdocs\forum\config\config.php(312): PDOStatement->execute()
+#1 C:\xampp\htdocs\forum\posts_extend.php(23): bdd->addReponse(Object(reponse))
 #2 {main}

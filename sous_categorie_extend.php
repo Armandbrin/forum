@@ -4,9 +4,9 @@ require_once("config/config.php");
 $bdd = new bdd();
 $bdd->connect();
 
-$idCat = "8";
-$sousCat = $bdd->getAllSousCategorie($idCat);
-var_dump($sousCat);
+$idCat = $_GET["cat"];
+$sousCat = $bdd->getSousCategorie($idCat);
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -45,14 +45,20 @@ var_dump($sousCat);
         </nav>
     </header>
     <main>
-        <section class="mx-10 mt-2 bg-red-800 rounded-t-lg p-1">
-            <h2><?= $sousCat[0]["nom"] ?></h2>
+        <?php $sous_categorie = $bdd->getSousCategorie($idCat); ?>
+        <section class="flex items-center flex-col">
+            <article class="flex justify-center bg-red-600 p-1 border-b-[1px] border-red-500 mx-10 text-2xl w-40 rounded-lg mb-10">
+                <h2><?= $sous_categorie[0]['nom'] ?></h2>
+            </article>
+            <?php 
+            foreach ($bdd->getAllPost($sous_categorie[0]['id']) as $posts) { 
+                ?>
+                <article class="border-2 border-black rounded-lg p-2 w-[60vw]">
+                    <h2 class="text-xl underline"><a href="posts_extend.php?cat=<?= $sous_categorie[0]['id'] ?>&post=<?= $posts[0] ?>"><?= $posts["titre"] ?></a></h2>
+                    <p><a href="posts_extend.php?cat=<?= $sous_categorie[0]['id'] ?>&post=<?= $posts[0] ?>"><?= $posts["contenue"] ?></a></p>
+                </article>
+            <?php } ?>
         </section>
-        <?php foreach ($bdd->getAllSousCategorie($idCat) as $sous_categorie) { ?>
-            <section class="flex justify-between bg-red-600 p-1 border-b-[1px] border-red-500 mx-10">
-                <h2><a href=""><?= $sous_categorie['nom'] ?></a></h2>
-            </section>
-        <?php } ?>
     </main>
     <footer class="flex justify-between items-center pl-32 pr-32 h-24 border-t-[1px] border-[#ed231a] fixed bottom-0 w-full">
         <a href="index.php"><img class="w-[10vw] h-[7vh]" src="img/logo-forum.png" alt="logo forum"></a>

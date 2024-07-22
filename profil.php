@@ -4,17 +4,26 @@ require_once("config/config.php");
 $bdd = new bdd();
 $bdd->connect();
 
+
+
 if (isset($_POST["send"])) {
     $titre = htmlspecialchars(trim($_POST["titre"]));
     $contenue = htmlspecialchars(trim($_POST["contenue"]));
 
+    if (isset($_POST['sous_categorie'])) {
+        $sous_categorie = $_POST['sous_categorie'];
+    }
+
     $newPost = new posts();
     $newPost->setPostTitre($titre);
     $newPost->setPostContenue($contenue);
+    $newPost->setIdUserPost($_SESSION["user"]["id"]);
+    $newPost->setIdSousCategoriePost($sous_categorie);
 
     $bdd->addPost($newPost);
-
 }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -71,11 +80,12 @@ if (isset($_POST["send"])) {
                 <label>Sous-catégorie associée:</label>
                 <select name="sous_categorie">
                     <?php foreach ($bdd->getAllCategorie() as $c) { ?>
-                    <?php foreach ($bdd->getAllSousCategorie($c["id"]) as $sousCategorie) { ?>
-                        <option value="<?= $sousCategorie[0] ?>"><?= $sousCategorie["nom"] ?></option>
-                    <?php }} ?>
+                        <?php foreach ($bdd->getAllSousCategorie($c["id"]) as $sousCategorie) { ?>
+                            <option value="<?= $sousCategorie[0] ?>"><?= $sousCategorie["nom"] ?></option>
+                    <?php }
+                    } ?>
                 </select>
-                
+
                 <button class="border-2 border-black p-1 bg-gradient-to-l from-red-600 to-red-800 text-white rounded-lg" type="submit" name="send">Ajouter</button>
             </form>
         </section>
