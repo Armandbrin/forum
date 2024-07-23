@@ -1,0 +1,11 @@
+#admin:hover, #profil:hover ,#deco:hover, #conn:hover, #acceuil:hover {
+	background: linear-gradient(-45deg, #FFFFFF, #7e1d50);
+	background-size: 1000% 1000%;
+	animation: gradient 1s;
+}
+
+@keyframes gradient {	
+	0% {
+		background-position: -10% -10%;
+	}
+}

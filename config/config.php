@@ -285,10 +285,11 @@ class bdd
     public function getAllReponse($id)
     {
         try {
-            $sql = $this->bdd->prepare("SELECT * FROM reponse JOIN posts ON reponse.id_post = posts.id WHERE posts.id = :id");
+            $sql = $this->bdd->prepare("SELECT * FROM reponse JOIN posts ON reponse.id_post = posts.id 
+            JOIN users ON reponse.id_user = users.id WHERE posts.id = :id");
             $sql->bindParam(":id", $id);
             $sql->execute();
-            return $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $sql->fetchAll();
         } catch (PDOException $e) {
             $this->bdd->rollBack();
             $error = fopen("error.log", "w");
@@ -297,11 +298,10 @@ class bdd
             throw new Exception("error");
         }
     }
-    public function getIdReponse($id)
+    public function getIdReponse()
     {
         try {
-            $sql = $this->bdd->prepare("SELECT id FROM reponse WHERE id_post = :id");
-            $sql->bindParam(":id", $id);
+            $sql = $this->bdd->prepare("SELECT id FROM reponse");
             $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

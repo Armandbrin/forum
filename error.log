@@ -1,5 +1,0 @@
-PDOException: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'id_post' cannot be null in C:\xampp\htdocs\forum\config\config.php:312
-Stack trace:
-#0 C:\xampp\htdocs\forum\config\config.php(312): PDOStatement->execute()
-#1 C:\xampp\htdocs\forum\posts_extend.php(23): bdd->addReponse(Object(reponse))
-#2 {main}

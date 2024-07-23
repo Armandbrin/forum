@@ -7,7 +7,7 @@ $bdd->connect();
 $idPost = $_GET["post"];
 
 
-if (isset($_POST["envoyer"])) {
+if (isset($_POST["envoyer"]) && isset($_SESSION["user"])) {
     $contenue = htmlspecialchars(trim($_POST["reponse"]));
 
 
@@ -17,7 +17,12 @@ if (isset($_POST["envoyer"])) {
     $newReponse->setIdUser($_SESSION["user"]["id"]);
 
     $bdd->addReponse($newReponse);
+
+    $mess = NULL;
+} else {
+    $mess = "Veuillez vous connecter/inscrire pour repondre a un post";
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -53,25 +58,26 @@ if (isset($_POST["envoyer"])) {
             <?php } ?>
         </nav>
     </header>
-    <main>
+    <main style="background-image: url(https://static.vecteezy.com/ti/vecteur-libre/p3/265609-illustrationle-paysage-rouge-vectoriel.png)">
         <section class="flex items-center flex-col">
-            <?php 
+            <?php
             foreach ($bdd->getAllPost2($idPost) as $posts) { ?>
-                <article class="border-2 border-black rounded-lg p-2 w-[60vw]">
+                <article class="border-2 bg-red-800 text-white border-black rounded-lg p-2 w-[60vw] mb-10">
                     <h2 class="text-xl underline"><?= $posts["titre"] ?></h2>
                     <p><?= $posts["contenue"] ?></p>
                 </article>
-            <?php } $idReponse = $bdd->getIdReponse($idPost);
-            foreach ($bdd->getAllReponse($idReponse[0]["id"]) as $rep) { 
-                ?>
-                <article class="border-2 border-black rounded-lg p-2 w-[60vw]">
-                    <p><?= $rep[0]["contenue"] ?></p>
+            <?php }
+            foreach ($bdd->getAllReponse($idPost[0]) as $rep) { ?>
+                <article class="border-2 border-black bg-red-600 rounded-lg p-2 w-[60vw] mb-10 text-white">
+                    <p class="underline">Commentaire ecrit par : <?= $rep[10] ?></p>
+                    <p class="text-lg"><?= $rep[1] ?></p>
                 </article>
             <?php } ?>
-            <article class="border-2 border-black rounded-lg p-2 w-[60vw]">
+            <article class="border-2 border-black rounded-lg p-2 w-[60vw] bg-red-500">
                 <form class="flex flex-col items-center" method="post">
-                    <textarea class="w-[40vw] border-2 border-black rounded-lg p-2" name="reponse" placeholder="Réponse"></textarea>
-                    <button type="submit" name="envoyer">Envoyer</button>
+                    <textarea class="w-[40vw] h-24 border-2 border-black rounded-lg p-2 overflow-y-auto resize-none" name="reponse" placeholder="Réponse"></textarea>
+                    <button class="p-1 border-2 border-black rounded-lg mt-1 bg-gradient-to-l from-red-600 to-red-800" type="submit" name="envoyer">Envoyer</button>
+                    <p class="underline text-md text-white"><?php if (isset($mess)) { print $mess; } ?></p>
                 </form>
             </article>
         </section>
