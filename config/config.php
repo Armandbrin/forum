@@ -3,6 +3,7 @@ require_once("class/categorie.php");
 require_once("class/users.php");
 require_once("class/posts.php");
 require_once("class/reponse.php");
+require_once("class/report.php");
 class bdd
 {
     private $bdd;
@@ -44,7 +45,23 @@ class bdd
         try {
             $sql = "SELECT * FROM users";
             $done = $this->bdd->query($sql);
-            return $done->fetchAll(PDO::FETCH_ASSOC);
+            return $done->fetchAll();
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            throw new Exception("error");
+        }
+    }
+
+    public function getAllUsersId($id)
+    {
+        try {
+            $sql = $this->bdd->prepare("SELECT * FROM users WHERE users.id = :id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            return $sql->fetchAll();
         } catch (PDOException $e) {
             $this->bdd->rollBack();
             $error = fopen("error.log", "w");
@@ -111,7 +128,7 @@ class bdd
             $error = fopen("error.log", "w");
             $txt = $e . "\n";
             fwrite($error, $txt);
-            // throw new Exception("error");
+            throw new Exception("error");
         }
     }
     public function getIdPost($id)
@@ -161,7 +178,7 @@ class bdd
         try {
             $sql = "SELECT * FROM categorie";
             $done = $this->bdd->query($sql);
-            return $done->fetchAll(PDO::FETCH_ASSOC);
+            return $done->fetchAll();
         } catch (PDOException $e) {
             $this->bdd->rollBack();
             $error = fopen("error.log", "w");
@@ -279,6 +296,23 @@ class bdd
             throw new Exception("error");
         }
     }
+    public function delPost($id)
+    {
+
+        try {
+            $this->bdd->beginTransaction();
+            $sql = $this->bdd->prepare("DELETE FROM posts WHERE posts.id = :id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            $this->bdd->commit();
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            // throw new Exception("error");
+        }
+    }
 
 
 
@@ -287,6 +321,21 @@ class bdd
         try {
             $sql = $this->bdd->prepare("SELECT * FROM reponse JOIN posts ON reponse.id_post = posts.id 
             JOIN users ON reponse.id_user = users.id WHERE posts.id = :id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            return $sql->fetchAll();
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            throw new Exception("error");
+        }
+    }
+    public function getAllReponseId($id)
+    {
+        try {
+            $sql = $this->bdd->prepare("SELECT * FROM reponse WHERE reponse.id = :id");
             $sql->bindParam(":id", $id);
             $sql->execute();
             return $sql->fetchAll();
@@ -340,7 +389,50 @@ class bdd
         try {
             $sql = "SELECT * FROM report";
             $done = $this->bdd->query($sql);
-            return $done->fetchAll(PDO::FETCH_ASSOC);
+            return $done->fetchAll();
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            throw new Exception("error");
+        }
+    }
+
+    public function addReportPost(report $report): void
+    {
+        try {
+            $this->bdd->beginTransaction();
+            $message = $report->getId_message();
+            $user = $report->getId_user();
+            $post = $report->getId_post();
+            $sql = $this->bdd->prepare("INSERT INTO report (id_message, id_user, id_post) VALUES (:id_message, :id_user, :id_post)");
+            $sql->bindParam(":id_message", $message);
+            $sql->bindParam(":id_user", $user);
+            $sql->bindParam(":id_post", $post);
+            $sql->execute();
+            $this->bdd->commit();
+        } catch (PDOException $e) {
+            $this->bdd->rollBack();
+            $error = fopen("error.log", "w");
+            $txt = $e . "\n";
+            fwrite($error, $txt);
+            throw new Exception("error");
+        }
+    }
+    public function addReportReponse(report $report): void
+    {
+        try {
+            $this->bdd->beginTransaction();
+            $message = $report->getId_message();
+            $user = $report->getId_user();
+            $reponse = $report->getId_reponse();
+            $sql = $this->bdd->prepare("INSERT INTO report (id_message, id_user, id_reponse) VALUES (:id_message, :id_user, :id_reponse)");
+            $sql->bindParam(":id_message", $message);
+            $sql->bindParam(":id_user", $user);
+            $sql->bindParam(":id_reponse", $reponse);
+            $sql->execute();
+            $this->bdd->commit();
         } catch (PDOException $e) {
             $this->bdd->rollBack();
             $error = fopen("error.log", "w");

@@ -4,27 +4,22 @@ require_once("config/config.php");
 $bdd = new bdd();
 $bdd->connect();
 
-$idPost = $_GET["post"];
+$idRep = $_GET["rep"];
+$idUser = $_GET["user"];
 
 
-if (isset($_POST["envoyer"])) {
+if (isset($_POST["report"])) {
+    $message = htmlspecialchars(stripslashes(trim($_POST["message"])));
 
-    if (!empty($_POST["reponse"]) && isset($_SESSION["user"])) {
-        $contenue = htmlspecialchars(stripslashes(trim($_POST["reponse"])));
+    $newReport = new report();
+    $newReport->setId_message($message);
+    $newReport->setId_user($idUser);
+    $newReport->setId_reponse($idRep);
 
-        $newReponse = new reponse();
-        $newReponse->setText($contenue);
-        $newReponse->setIdPost($idPost);
-        $newReponse->setIdUser($_SESSION["user"]["id"]);
+    $bdd->addReportReponse($newReport);
 
-        $bdd->addReponse($newReponse);
-
-        $mess = NULL;
-    } else {
-        $mess = "Veuillez vous connecter/inscrire pour repondre a un post";
-    }
+    header("Location:index.php");
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +30,7 @@ if (isset($_POST["envoyer"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
-    <title>Posts</title>
+    <title>Report</title>
 </head>
 
 <body>
@@ -68,30 +63,11 @@ if (isset($_POST["envoyer"])) {
     </header>
     <main class="flex flex-col items-center bg-cover bg-center bg-fixed bg-gray-300 min-h-[75vh] py-10" style="background-image: url(https://static.vecteezy.com/ti/vecteur-libre/p3/265609-illustrationle-paysage-rouge-vectoriel.png)">
         <section class="flex items-center flex-col">
-            <?php
-            foreach ($bdd->getAllPost2($idPost) as $posts) { ?>
-                <article class="border-2 bg-[#7e1d50] text-white border-white rounded-lg p-2 w-[60vw] mb-10" style="box-shadow: 8px 8px 5px white;">
-                    <h1 class="text-xl underline">Post:</h1>
-                    <h2 class="text-xl underline text-center"><?= $posts["titre"] ?></h2>
-                    <p><?= $posts["contenue"] ?></p>
-                    <a href="report_post.php?post=<?= $idPost ?>&user=<?= $posts["id_user"] ?>"><button class="border-2 border-black mt-5 rounded-lg bg-white text-black p-1" type="submit">report</button></a>
-                </article>
-            <?php }
-            foreach ($bdd->getAllReponse($idPost[0]) as $rep) { ?>
-                <article class="border-2 border-white bg-[#7e1d50] rounded-lg p-2 w-[60vw] mb-10 text-white" style="box-shadow: 8px 8px 5px white;">
-                    <p class="underline">Commentaire ecrit par : <?= $rep[10] ?></p>
-                    <p class="text-lg"><?= $rep[1] ?></p>
-                    <a href="report_reponse.php?rep=<?= $rep[0] ?>&user=<?= $rep[3] ?>"><button class="border-2 border-black rounded-lg bg-white text-black p-1" type="submit">report</button></a>
-                </article>
-            <?php } ?>
             <article class="border-2 border-white rounded-lg p-2 w-[60vw] bg-[#7e1d50]" style="box-shadow: 8px 8px 5px white;">
                 <form class="flex flex-col items-center" method="post">
-                    <textarea class="w-[40vw] h-24 border-2 border-black rounded-lg p-2 overflow-y-auto resize-none" name="reponse" placeholder="Réponse"></textarea>
-                    <button class="p-1 border-2 border-black rounded-lg mt-1 bg-white" type="submit" name="envoyer">Envoyer</button>
+                    <textarea class="w-[40vw] h-24 border-2 border-black rounded-lg p-2 overflow-y-auto resize-none" name="message" placeholder="Message"></textarea>
+                    <button class="p-1 border-2 border-black rounded-lg mt-1 bg-white" type="submit" name="report">Report</button>
                     <p class="underline text-md text-white">
-                        <?php if (isset($mess)) {
-                            print $mess;
-                        } ?></p>
                 </form>
             </article>
         </section>

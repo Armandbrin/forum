@@ -1,0 +1,5 @@
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`forum`.`report`, CONSTRAINT `report_id_reponse_foreign` FOREIGN KEY (`id_reponse`) REFERENCES `reponse` (`id`)) in C:\xampp\htdocs\forum\config\config.php:306
+Stack trace:
+#0 C:\xampp\htdocs\forum\config\config.php(306): PDOStatement->execute()
+#1 C:\xampp\htdocs\forum\admin.php(37): bdd->delPost('7')
+#2 {main}
